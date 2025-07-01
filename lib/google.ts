@@ -7,15 +7,16 @@ export const autocomplete = async (input: string) => {
   if (!input) return [];
 
   try {
-    const response = await client.placeAutocomplete({
+    const response = await client.textSearch({
       params: {
-        input,
+        query: input,
         key: process.env.GOOGLE_API_KEY!,
       },
     });
 
-    return response.data.predictions;
+    return response.data.results || [];
   } catch (error) {
     console.error(error);
+    return [];
   }
 };

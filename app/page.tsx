@@ -10,17 +10,17 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import { autocomplete } from "@/lib/google";
-import { PlaceAutocompleteResult } from "@googlemaps/google-maps-services-js";
+import { PlaceData } from "@googlemaps/google-maps-services-js";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [predictions, setPredictions] = useState<PlaceAutocompleteResult[]>([]);
+  const [predictions, setPredictions] = useState<PlaceData[]>([]);
   const [input, setInput] = useState("");
 
   useEffect(() => {
     const fetchPredictions = async () => {
       const predictions = await autocomplete(input);
-      setPredictions(predictions ?? []);
+      setPredictions(predictions as PlaceData[]);
     };
     fetchPredictions();
   }, [input]);
@@ -38,7 +38,7 @@ export default function Home() {
           <CommandGroup heading="Suggestions">
             {predictions.map((prediction) => (
               <CommandItem key={prediction.place_id}>
-                {prediction.description}
+                {prediction.formatted_address}
               </CommandItem>
             ))}
           </CommandGroup>
